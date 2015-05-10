@@ -121,6 +121,18 @@ namespace CUA {
     template <>
     Reference to_ref<bool>(bool value)
     { return getGlobalRuntime()->newBoolean(value); }
+    
+    #define cast_value_to_number_ref(v) \
+        to_ref<std::int64_t>(from_value<std::int64_t>(v))
+    
+    #define cast_value_to_string_ref(v) \
+        to_ref<std::string>(from_value<std::string>(v))
+        
+    #define cast_value_to_boolean_ref(v) \
+        to_ref<bool>(from_value<bool>(v))
+        
+    #define get_value(value_type, v) \
+        (dynamic_cast<value_type*>(v.get()))
 }
 
 #endif // _CUA_CASTING_H_
