@@ -3,5 +3,10 @@
 
 using namespace CUA;
 
-Value *Scope::CHILD_SCOPE_KEY =
-    getGlobalRuntime()->newString(Config::CHILD_SCOPE_KEY);
+StringValue *Scope::CHILD_SCOPE_KEY =
+    dynamic_cast<StringValue*>(
+        getGlobalRuntime()->newString(Config::CHILD_SCOPE_KEY).get());
+    
+StringValue *Scope::UPPER_SCOPE_KEY =
+    dynamic_cast<StringValue*>(
+        getGlobalRuntime()->newString(Config::UPPER_SCOPE_KEY).get());

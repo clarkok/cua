@@ -13,6 +13,7 @@ namespace CUA {
         static const T_OID INVALID_ID = (0ull - 1);
         
         static const char CHILD_SCOPE_KEY[] = "__child_scopes__";
+        static const char UPPER_SCOPE_KEY[] = "__upper_scope__";
         
         static const char LENGTH_KEY[] = "length";
     }
