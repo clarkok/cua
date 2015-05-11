@@ -32,16 +32,15 @@ namespace CUA {
             )->getValue();
             
             // TODO initialize child_scopes as Array
-            child_scope_table->setFromString(
+            child_scope_table->getFromString(
                 dynamic_cast<StringValue*>(
                     getGlobalRuntime()
                         ->newString(Config::LENGTH_KEY).get()
-                ),
-                getGlobalRuntime()->newNumber(0)
-            );
+                )
+            )->reset(getGlobalRuntime()->newNumber(0));
         }
         
-        inline Reference
+        inline Reference*
         getReferenceByName(std::string name) const
         {
             auto ref = table->getFromString(
@@ -50,20 +49,10 @@ namespace CUA {
                         ->newString(name).get()
                 ));
             if (
-                ref.get()->getType() == Value::ValueType::V_NIL &&
+                ref->get()->getType() == Value::ValueType::V_NIL &&
                 upper_scope
             )
                 return upper_scope->getReferenceByName(name);
-            return ref;
-        }
-        
-        inline Reference
-        registerReference(std::string name, Reference ref)
-        {
-            table->set(
-                getGlobalRuntime()->newString(name).get(),
-                ref
-            );
             return ref;
         }
         
@@ -78,7 +67,7 @@ namespace CUA {
                 dynamic_cast<NumberValue*>(
                     child_scope_table->get(
                         length_key
-                    ).get()
+                    )->get()
                 )->getValue();
                 
             child_scope_table->set(

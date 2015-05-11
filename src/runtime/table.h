@@ -53,24 +53,22 @@ namespace CUA {
             key() const
             { return list_iter->first; }
             
-            Reference
-            value() const
-            { return list_iter->second; }
+            Reference*
+            value()
+            { return &list_iter->second; }
         };
     
-        Reference get(Value *) const;
-        Reference set(Value *, Reference);
+        Reference *get(Value *);
+        void 
+        set(Value *k, Value *v)
+        { get(k)->reset(v); }
+        
         void erase(Value *);
         
-        Reference getFromNumber(NumberValue *) const;
-        Reference getFromString(StringValue *) const;
-        Reference getFromTable(TableValue *) const;
-        Reference getFromBoolean(BooleanValue *) const;
-        
-        Reference setFromNumber(NumberValue *, Reference);
-        Reference setFromString(StringValue *, Reference);
-        Reference setFromTable(TableValue *, Reference);
-        Reference setFromBoolean(BooleanValue *, Reference);
+        Reference *getFromNumber(NumberValue *);
+        Reference *getFromString(StringValue *);
+        Reference *getFromTable(TableValue *);
+        Reference *getFromBoolean(BooleanValue *);
         
         void eraseFromNumber(NumberValue *);
         void eraseFromString(StringValue *);

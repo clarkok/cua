@@ -9,22 +9,22 @@ TEST(TableTest, NumberValue)
     auto table = dynamic_cast<TableValue*>(getGlobalRuntime()->newTable().get());
     auto key = getGlobalRuntime()->newNumber(10);
     auto value = getGlobalRuntime()->newString("test");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     value = getGlobalRuntime()->newString("test2");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test2", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     table->getValue()->erase(key.get());
     EXPECT_EQ(CUA::Value::ValueType::V_NIL,
-        table->getValue()->get(key.get()).get()->getType()
+        table->getValue()->get(key.get())->get()->getType()
     );
 }
 
@@ -33,22 +33,22 @@ TEST(TableTest, StringValue)
     auto table = dynamic_cast<TableValue*>(getGlobalRuntime()->newTable().get());
     auto key = getGlobalRuntime()->newString("key");
     auto value = getGlobalRuntime()->newString("test");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     value = getGlobalRuntime()->newString("test2");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test2", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     table->getValue()->erase(key.get());
     EXPECT_EQ(CUA::Value::ValueType::V_NIL,
-        table->getValue()->get(key.get()).get()->getType()
+        table->getValue()->get(key.get())->get()->getType()
     );
 }
 
@@ -57,22 +57,22 @@ TEST(TableTest, BooleanValue)
     auto table = dynamic_cast<TableValue*>(getGlobalRuntime()->newTable().get());
     auto key = getGlobalRuntime()->newBoolean(true);
     auto value = getGlobalRuntime()->newString("test");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     value = getGlobalRuntime()->newString("test2");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test2", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     table->getValue()->erase(key.get());
     EXPECT_EQ(CUA::Value::ValueType::V_NIL,
-        table->getValue()->get(key.get()).get()->getType()
+        table->getValue()->get(key.get())->get()->getType()
     );
 }
 
@@ -81,22 +81,22 @@ TEST(TableTest, TableValue)
     auto table = dynamic_cast<TableValue*>(getGlobalRuntime()->newTable().get());
     auto key = getGlobalRuntime()->newTable();
     auto value = getGlobalRuntime()->newString("test");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     value = getGlobalRuntime()->newString("test2");
-    table->getValue()->set(key.get(), value);
+    table->getValue()->get(key.get())->reset(value);
     EXPECT_EQ("test2", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(key.get()).get())->getValue()
+            table->getValue()->get(key.get())->get())->getValue()
     );
     
     table->getValue()->erase(key.get());
     EXPECT_EQ(CUA::Value::ValueType::V_NIL,
-        table->getValue()->get(key.get()).get()->getType()
+        table->getValue()->get(key.get())->get()->getType()
     );
 }
 
@@ -109,31 +109,31 @@ TEST(TableTest, Overall)
     auto table_key = getGlobalRuntime()->newTable();
     
     auto number_value = getGlobalRuntime()->newString("number");
-    table->getValue()->set(number_key.get(), number_value);
+    table->getValue()->get(number_key.get())->reset(number_value);
     EXPECT_EQ("number", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(number_key.get()).get())->getValue()
+            table->getValue()->get(number_key.get())->get())->getValue()
     );
     
     auto string_value = getGlobalRuntime()->newString("string");
-    table->getValue()->set(string_key.get(), string_value);
+    table->getValue()->get(string_key.get())->reset(string_value);
     EXPECT_EQ("string", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(string_key.get()).get())->getValue()
+            table->getValue()->get(string_key.get())->get())->getValue()
     );
     
     auto boolean_value = getGlobalRuntime()->newString("boolean");
-    table->getValue()->set(boolean_key.get(), boolean_value);
+    table->getValue()->get(boolean_key.get())->reset(boolean_value);
     EXPECT_EQ("boolean", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(boolean_key.get()).get())->getValue()
+            table->getValue()->get(boolean_key.get())->get())->getValue()
     );
     
     auto table_value = getGlobalRuntime()->newString("table");
-    table->getValue()->set(table_key.get(), table_value);
+    table->getValue()->get(table_key.get())->reset(table_value);
     EXPECT_EQ("table", 
         dynamic_cast<StringValue*>(
-            table->getValue()->get(table_key.get()).get())->getValue()
+            table->getValue()->get(table_key.get())->get())->getValue()
     );
 }
 
@@ -146,7 +146,7 @@ TEST(TableTest, Iterator)
     for (int i = 0; i < TEST_NUMBER; ++i) {
         auto key = getGlobalRuntime()->newNumber(i);
         auto value = getGlobalRuntime()->newNumber(i);
-        table->getValue()->set(key.get(), value);
+        table->getValue()->get(key.get())->reset(value);
     }
     
     int count = 0;
@@ -157,34 +157,9 @@ TEST(TableTest, Iterator)
     ) {
         EXPECT_EQ(
             dynamic_cast<NumberValue*>(iter.key())->getValue(),
-            dynamic_cast<NumberValue*>(iter.value().get())->getValue()
+            dynamic_cast<NumberValue*>(iter.value()->get())->getValue()
         );
         ++count;
     }
     EXPECT_EQ(TEST_NUMBER, count);
-}
-
-TEST(TableTest, Size)
-{
-    static const int TEST_NUMBER = 10;
-    
-    auto table = dynamic_cast<TableValue*>(getGlobalRuntime()->newTable().get());
-    
-    EXPECT_EQ(0, table->getValue()->size());
-    
-    for (int i = 0; i < TEST_NUMBER; ++i) {
-        auto key = getGlobalRuntime()->newNumber(i);
-        auto value = getGlobalRuntime()->newNumber(i);
-        table->getValue()->set(key.get(), value);
-    }
-    
-    EXPECT_EQ(TEST_NUMBER, table->getValue()->size());
-    
-    for (int i = 0; i < TEST_NUMBER; ++i) {
-        auto key = getGlobalRuntime()->newNumber(i);
-        auto value = getGlobalRuntime()->newNumber(i);
-        table->getValue()->erase(value);
-    }
-    
-    EXPECT_EQ(0, table->getValue()->size());
 }

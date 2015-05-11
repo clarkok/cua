@@ -8,12 +8,12 @@ TEST(ScopeTest, Basic)
     Scope *uut = new Scope(nullptr);
     
     auto ref = getGlobalRuntime()->newString("test");
-    uut->registerReference("test", ref);
+    uut->getReferenceByName("test")->reset(ref);
     
     EXPECT_EQ(
         "test", 
         dynamic_cast<StringValue*>(
-            uut->getReferenceByName("test").get()
+            uut->getReferenceByName("test")->get()
         )->getValue()
     );
 }
@@ -24,22 +24,22 @@ TEST(ScopeTest, Lookup)
     Scope *child = base->createChildScope();
     
     auto ref = getGlobalRuntime()->newString("base");
-    base->registerReference("base", ref);
+    base->getReferenceByName("base")->reset(ref);
     
     ref = getGlobalRuntime()->newString("child");
-    child->registerReference("child", ref);
+    child->getReferenceByName("child")->reset(ref);
     
     EXPECT_EQ(
         "base",
         dynamic_cast<StringValue*>(
-            child->getReferenceByName("base").get()
+            child->getReferenceByName("base")->get()
         )->getValue()
     );
     
     EXPECT_EQ(
         "child",
         dynamic_cast<StringValue*>(
-            child->getReferenceByName("child").get()
+            child->getReferenceByName("child")->get()
         )->getValue()
     );
 }

@@ -144,8 +144,9 @@ namespace CUA {
         get() const
         { return reference; }
         
-        operator Value* () const
-        { return reference; }
+        inline
+        operator Value* ()
+        { return get(); }
     };
 }
 

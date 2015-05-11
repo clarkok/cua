@@ -14,14 +14,17 @@ namespace CUA {
         std::list<Value *> value_pool;
         NilValue *nil_value;
         Scope *global_scope;
+        mutable Reference nil_ref;
     public:
         Runtime()
-        : nil_value(new NilValue()), global_scope(nullptr)
+        : nil_value(new NilValue()),
+          global_scope(nullptr),
+          nil_ref(Reference(nil_value))
         { }
         
-        inline Reference
+        inline Reference*
         getNilReference() const
-        { return Reference(nil_value); }
+        { return &nil_ref; }
         
         inline Reference
         newNumber(std::int64_t value)
@@ -58,7 +61,7 @@ namespace CUA {
         
         inline Reference
         newNil()
-        { return getNilReference(); }
+        { return *getNilReference(); }
         
         inline size_t
         valueCount() const
