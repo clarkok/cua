@@ -111,3 +111,36 @@ TEST(VMTest, GotoLabel)
         from_ref<std::int64_t>(
             *nvm.current_scope->getReferenceByName("a")));
 }
+
+TEST(VMTest, IfStmt)
+{
+    const char TEST_CODE[] =
+        "a = 1\n"
+        "if (true) then\n"
+        "  a = 2;\n"
+        "end\n"
+        "b = 1\n"
+        "if (false) then\n"
+        "  b = 2\n"
+        "else\n"
+        "  b = 3\n"
+        "end\n"
+    ;
+    NaiveVM nvm;
+    try {
+        Driver d(TEST_CODE);
+        d.parse();
+        NaiveCompiler nc;
+        auto inss = nc.compile(d.root);
+        nvm.run(inss);
+        EXPECT_EQ(2,
+            from_ref<std::int64_t>(
+                *nvm.current_scope->getReferenceByName("a")));
+        EXPECT_EQ(3,
+            from_ref<std::int64_t>(
+                *nvm.current_scope->getReferenceByName("b")));
+    }
+    catch (const Exception &e) {
+        EXPECT_EQ("", e.toString());
+    }
+}

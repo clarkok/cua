@@ -20,6 +20,7 @@ namespace CUA {
         static const char SCOPE_LOCAL_PREFIX[] = "@";
         static const char SCOPE_COMPILE_TEMP_PREFIX[] = "#";
         static const char SCOPE_LITERAL_PREFIX[] = "~";
+        static const char SCOPE_TEMP_LABEL_PREFIX[] = "#";
     }
 }
 

@@ -169,6 +169,14 @@ NaiveCompiler::visit(ASTString *n)
 }
 
 void
+NaiveCompiler::visit(ASTBoolean *n)
+{
+    result_name = getGlobalRuntime()->newLiteral(
+        getGlobalRuntime()->newBoolean(n->value).get()
+    );
+}
+
+void
 NaiveCompiler::visit(ASTLabel *n)
 {
     ins_list.push_back(Instrument(
@@ -183,5 +191,36 @@ NaiveCompiler::visit(ASTGoto *n)
     ins_list.push_back(Instrument(
         Instrument::Type::I_GOTO,
         "::" + n->dist + "::"
+    ));
+}
+
+void
+NaiveCompiler::visit(ASTIf *n)
+{
+    auto then_label = getGlobalRuntime()->newTempLabel();
+    auto end_label = getGlobalRuntime()->newTempLabel();
+    
+    n->condition->accept(this);
+    ins_list.push_back(Instrument(
+        InstrumentType::I_GOTOIF,
+        then_label,
+        result_name
+    ));
+    
+    if (n->else_stmt)
+        n->else_stmt->accept(this);
+    ins_list.push_back(Instrument(
+        InstrumentType::I_GOTO,
+        end_label
+    ));
+    ins_list.push_back(Instrument(
+        InstrumentType::I_LABEL,
+        then_label
+    ));
+    if (n->then_stmt)
+        n->then_stmt->accept(this);
+    ins_list.push_back(Instrument(
+        InstrumentType::I_LABEL,
+        end_label
     ));
 }

@@ -9,6 +9,9 @@ using namespace CUA;
 static char TEST_CODE[] =
     "::label::\n"
     "goto label\n"
+    "if (true) then\n"
+    "  a = 2;\n"
+    "end\n"
     "a = 255 + 2\n"
     "a = b * c\n"
     "a = d + a * b\n"
@@ -23,7 +26,6 @@ TEST(NaiveCompilerTest, Basic)
     NaiveCompiler nc;
     d.root->accept(&nc);
     
-    /*
     for (auto &i : nc.ins_list) {
         std::cout << ERE(InstrumentType)
                         ->toString(i.type) << '\t' 
@@ -31,5 +33,4 @@ TEST(NaiveCompilerTest, Basic)
                   << i.rs << '\t'
                   << i.rt << std::endl;
     }
-    */
 }

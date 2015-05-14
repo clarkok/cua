@@ -55,14 +55,18 @@
     LEFT_BRACKET "["
     RIGHT_BRACKET "]"
     DOT "."
+    IF "if"
+    THEN "then"
+    ELSE "else"
     ;
     
 %token <std::string> ID STRING LABEL
 %token <int> INT
+%token <bool> TRUE FALSE
 
-%type <CUA::ASTNode *> chunk block stat_list stat var_list expr_list var
+%type <CUA::ASTNode *> chunk block stmt_list stmt var_list expr_list var
 %type <CUA::ASTNode *> expr logic_expr compare_expr additive_expr 
-%type <CUA::ASTNode *> multiple_expr unary_expr prefix_expr
+%type <CUA::ASTNode *> multiple_expr unary_expr prefix_expr if_stmt
 %type <CUA::ASTBinaryExpr::Operator> logic_op compare_op
 %type <CUA::ASTUnaryExpr::Operator> unary_op
     
@@ -70,21 +74,28 @@
 
 chunk : block { driver.root = new CUA::ASTChunk($1); }
 
-block : stat_list { $$ = $1; }
+block : stmt_list { $$ = $1; }
 
-stat_list : stat { $$ = new CUA::ASTStatList($1); }
-    | stat_list stat
+stmt_list : stmt { $$ = new CUA::ASTStatList($1); }
+    | stmt_list stmt
         {
             if ($2)
                 dynamic_cast<CUA::ASTStatList*>($1)->list.push_back($2);
             $$ = $1;
         }
 
-stat : SEMICOLON { $$ = nullptr; }
+stmt : SEMICOLON { $$ = nullptr; }
     | DO block END { $$ = $2; }
     | var_list EQ expr_list { $$ = new CUA::ASTAssignment($1, $3); }
     | LABEL { $$ = new CUA::ASTLabel($1); }
     | GOTO ID { $$ = new CUA::ASTGoto($2); }
+    | if_stmt { $$ = $1; }
+    
+if_stmt : 
+    IF LEFT_PAREN expr RIGHT_PAREN THEN stmt_list END
+        { $$ = new CUA::ASTIf($3, $6); }
+    | IF LEFT_PAREN expr RIGHT_PAREN THEN stmt_list ELSE stmt_list END
+        { $$ = new CUA::ASTIf($3, $6, $8); }
     
 var_list : var { $$ = new CUA::ASTVarList($1); }
     | var_list COMMA var
@@ -161,6 +172,8 @@ prefix_expr : var { $$ = $1; }
     | LEFT_PAREN expr RIGHT_PAREN { $$ = $2; }
     | INT { $$ = new CUA::ASTNumber($1); }
     | STRING { $$ = new CUA::ASTString($1); }
+    | TRUE { $$ = new CUA::ASTBoolean($1); }
+    | FALSE { $$ = new CUA::ASTBoolean($1); }
     
 var : ID { $$ = new CUA::ASTID($1); }
     | var LEFT_BRACKET expr RIGHT_BRACKET

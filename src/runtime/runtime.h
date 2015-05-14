@@ -16,6 +16,7 @@ namespace CUA {
         Scope *global_scope;
         mutable Reference nil_ref;
         Config::T_OID literal_count = 0;
+        Config::T_OID temp_label_count = 0;
     public:
         Runtime()
         : nil_value(new NilValue()),
@@ -76,6 +77,11 @@ namespace CUA {
         
         std::string
         newLiteral(Value *);
+        
+        std::string
+        newTempLabel()
+        { return std::string("::") + Config::SCOPE_TEMP_LABEL_PREFIX
+                    + std::to_string(++temp_label_count) + "::"; }
     };
     
     inline Runtime *

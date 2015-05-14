@@ -13,5 +13,7 @@ void Visitor::visit(ASTOffsetExpr *) {}
 void Visitor::visit(ASTID *) {}
 void Visitor::visit(ASTNumber *) {}
 void Visitor::visit(ASTString *) {}
+void Visitor::visit(ASTBoolean *) {}
 void Visitor::visit(ASTLabel *) {}
 void Visitor::visit(ASTGoto *) {}
+void Visitor::visit(ASTIf *) {}

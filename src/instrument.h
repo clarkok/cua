@@ -8,16 +8,17 @@
 namespace CUA {
     ENUM_CLASS(InstrumentType,
         I_UNKNOWN,
-        I_ADD,
-        I_SUB,
-        I_MUL,
-        I_DIV,
-        I_MOD,
-        I_INDEX,
-        I_MOVE,
-        I_COPY,
-        I_LABEL,
-        I_GOTO
+        I_ADD,      // rd = rs + rt
+        I_SUB,      // rd = rs - rt
+        I_MUL,      // rd = rs * rt
+        I_DIV,      // rd = rs / rt
+        I_MOD,      // rd = rs % rt
+        I_INDEX,    // rd = rs[rt]
+        I_MOVE,     // rd = rs
+        I_COPY,     // rd = new rs
+        I_LABEL,    // rd:
+        I_GOTO,     // goto rd
+        I_GOTOIF    // if rs goto rd
     );
     
     struct Instrument
@@ -25,9 +26,9 @@ namespace CUA {
         typedef InstrumentType Type;
         
         Type type;
+        std::string rd;
         std::string rs;
         std::string rt;
-        std::string rd;
         
         Instrument(
             Type type,

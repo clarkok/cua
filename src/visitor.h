@@ -16,8 +16,10 @@ namespace CUA {
     struct ASTID;
     struct ASTNumber;
     struct ASTString;
+    struct ASTBoolean;
     struct ASTLabel;
     struct ASTGoto;
+    struct ASTIf;
     
 #define visitor_definations \
     virtual void visit(ASTChunk *);         \
@@ -31,8 +33,10 @@ namespace CUA {
     virtual void visit(ASTID *);            \
     virtual void visit(ASTNumber *);        \
     virtual void visit(ASTString *);        \
+    virtual void visit(ASTBoolean *);       \
     virtual void visit(ASTLabel *);         \
-    virtual void visit(ASTGoto *);
+    virtual void visit(ASTGoto *);          \
+    virtual void visit(ASTIf *);
     
     class Visitor
     {

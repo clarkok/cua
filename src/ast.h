@@ -168,6 +168,16 @@ namespace CUA {
         visitor_accept
     };
     
+    struct ASTBoolean : public ASTNode
+    {
+        bool value;
+        ASTBoolean(bool value)
+        : value(value)
+        { }
+        
+        visitor_accept
+    };
+    
     struct ASTLabel : public ASTNode
     {
         std::string name;
@@ -185,6 +195,25 @@ namespace CUA {
         
         ASTGoto(std::string dist)
         : dist(dist)
+        { }
+        
+        visitor_accept
+    };
+    
+    struct ASTIf : public ASTNode
+    {
+        ASTNode *condition;
+        ASTNode *then_stmt;
+        ASTNode *else_stmt;
+        
+        ASTIf(
+            ASTNode *condition,
+            ASTNode *then_stmt,
+            ASTNode *else_stmt = nullptr
+        )
+        : condition(condition),
+          then_stmt(then_stmt),
+          else_stmt(else_stmt)
         { }
         
         visitor_accept

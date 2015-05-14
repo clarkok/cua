@@ -1,4 +1,5 @@
 #include "runtime/operate.h"
+#include "casting.h"
 #include "vm.h"
 
 using namespace CUA;
@@ -80,6 +81,19 @@ NaiveVM::execInstrument(
                 if (label_iter == label_map.end())
                     throw Exception("No label found", ins.rd);
                 iter = label_iter->second;
+                break;
+            }
+        case InstrumentType::I_GOTOIF:
+            {
+                if (
+                    from_ref<bool>(
+                        *current_scope->getReferenceByName(ins.rs))
+                ) {
+                    auto label_iter = label_map.find(ins.rd);
+                    if (label_iter == label_map.end())
+                        throw Exception("No label found", ins.rd);
+                    iter = label_iter->second;
+                }
                 break;
             }
         default:

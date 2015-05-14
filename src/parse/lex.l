@@ -37,6 +37,11 @@ label ::{id}::
 "or" return yy::yyParser::make_OR(loc);
 "not" return yy::yyParser::make_NOT(loc);
 "goto" return yy::yyParser::make_GOTO(loc);
+"if" return yy::yyParser::make_IF(loc);
+"then" return yy::yyParser::make_THEN(loc);
+"else" return yy::yyParser::make_ELSE(loc);
+"true" return yy::yyParser::make_TRUE(true, loc);
+"false" return yy::yyParser::make_FALSE(false, loc);
 "=" return yy::yyParser::make_EQ(loc);
 "," return yy::yyParser::make_COMMA(loc);
 "(" return yy::yyParser::make_LEFT_PAREN(loc);
