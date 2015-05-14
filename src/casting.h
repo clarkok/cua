@@ -14,7 +14,15 @@ namespace CUA {
     T from_value(Value *value)
     { throw Exception("Can not cast"); }
     
-    template <>
+    template <typename T>
+    T from_ref(Reference ref)
+    { throw Exception("Can not cast"); }
+    
+    template <typename T>
+    Reference to_ref(T value)
+    { throw Exception("Can not cast"); }
+    
+    template <> inline
     std::int64_t from_value<std::int64_t>(Value *value)
     {
         switch (value->getType()) {
@@ -42,7 +50,7 @@ namespace CUA {
         }
     }
     
-    template <>
+    template <> inline
     std::string from_value(Value *value)
     {
         switch (value->getType()) {
@@ -67,7 +75,7 @@ namespace CUA {
         }
     }
     
-    template <>
+    template <> inline
     bool from_value(Value *value)
     {
         switch (value->getType()) {
@@ -89,36 +97,27 @@ namespace CUA {
         }
     }
     
-    template <typename T>
-    T from_ref(Reference ref)
-    { throw Exception("Can not cast"); }
-    
-    template <>
+    template <> inline
     std::int64_t from_ref<std::int64_t>(Reference ref)
     { return from_value<std::int64_t>(ref.get()); }
     
-    template <>
+    template <> inline
     std::string from_ref<std::string>(Reference ref)
     { return from_value<std::string>(ref.get()); }
     
-    template <>
+    template <> inline
     bool from_ref<bool>(Reference ref)
     { return from_value<bool>(ref.get()); }
     
-    
-    template <typename T>
-    Reference to_ref(T value)
-    { throw Exception("Can not cast"); }
-    
-    template <>
+    template <> inline
     Reference to_ref<std::int64_t>(std::int64_t value)
     { return getGlobalRuntime()->newNumber(value); }
     
-    template <>
+    template <> inline
     Reference to_ref<std::string>(std::string value)
     { return getGlobalRuntime()->newString(value); }
     
-    template <>
+    template <> inline
     Reference to_ref<bool>(bool value)
     { return getGlobalRuntime()->newBoolean(value); }
     

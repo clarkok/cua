@@ -20,6 +20,9 @@ namespace CUA {
         
         Reference mod(Value *, Value *);
         Reference modnn(NumberValue *, NumberValue *);
+        
+        Reference index(Value *, Value *);
+        Reference copy(Value *);
     }
 }
 

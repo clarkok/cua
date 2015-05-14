@@ -16,6 +16,10 @@ namespace CUA {
         static const char UPPER_SCOPE_KEY[] = "__upper_scope__";
         
         static const char LENGTH_KEY[] = "length";
+        
+        static const char SCOPE_LOCAL_PREFIX[] = "@";
+        static const char SCOPE_COMPILE_TEMP_PREFIX[] = "#";
+        static const char SCOPE_LITERAL_PREFIX[] = "~";
     }
 }
 

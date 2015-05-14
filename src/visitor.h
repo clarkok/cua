@@ -15,6 +15,7 @@ namespace CUA {
     struct ASTOffsetExpr;
     struct ASTID;
     struct ASTNumber;
+    struct ASTString;
     
 #define visitor_definations \
     virtual void visit(ASTChunk *);         \
@@ -26,19 +27,21 @@ namespace CUA {
     virtual void visit(ASTUnaryExpr *);     \
     virtual void visit(ASTOffsetExpr *);    \
     virtual void visit(ASTID *);            \
-    virtual void visit(ASTNumber *);
+    virtual void visit(ASTNumber *);        \
+    virtual void visit(ASTString *);
     
     class Visitor
     {
     public:
-        virtual ~Visitor() = 0;
+        Visitor() = default;
+        virtual ~Visitor() = default;
+        
         virtual void visit(ASTNode *)
         { throw Exception("Unknown AST node type"); }
         
         visitor_definations
     };
     
-#undef visitor_definations
 }
 
 #endif // _CUA_VISITOR_H_

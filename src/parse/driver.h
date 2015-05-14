@@ -14,7 +14,9 @@ public:
     { }
     
     virtual ~Driver()
-    { }
+    {
+        // FIXME deallocate AST
+    }
     
     void scanner_begin(const char *content = nullptr);
     void scanner_end();

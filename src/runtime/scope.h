@@ -17,6 +17,32 @@ namespace CUA {
         Table *child_scope_table;
         Scope *upper_scope;
         Config::T_OID internal_ref_count;
+        
+        inline Reference*
+        getOwnReferenceByName(std::string name)
+        {
+            return this_table->getFromString(
+                dynamic_cast<StringValue*>(
+                    getGlobalRuntime()
+                        ->newString(name).get()
+                ));
+        }
+        
+        Reference*
+        lookup(std::string name)
+        {
+            auto ref = getOwnReferenceByName(name);
+            if (ref->getType() == Value::ValueType::V_NIL &&
+                upper_scope)
+                ref = upper_scope->lookup(name);
+            if (ref->getType() != Value::ValueType::V_NIL)
+                this_table->getFromString(
+                        dynamic_cast<StringValue*>(
+                            getGlobalRuntime()->newString(name).get()
+                        )
+                    )->reset(ref->get());
+            return ref;
+        }
     public:
         Scope(Scope *upper_scope)
         :
@@ -46,35 +72,23 @@ namespace CUA {
         }
         
         inline Reference*
-        getOwnReferenceByName(std::string name)
-        {
-            return this_table->getFromString(
-                dynamic_cast<StringValue*>(
-                    getGlobalRuntime()
-                        ->newString(name).get()
-                ));
-        }
-        
-        inline Reference*
         getReferenceByName(std::string name)
         {
-            auto ref = getOwnReferenceByName(name);
-            if (
-                ref->get()->getType() == Value::ValueType::V_NIL &&
-                upper_scope
-            )
-                return upper_scope->getReferenceByName(name);
+            if (name.substr(0, std::strlen(Config::SCOPE_LOCAL_PREFIX))
+                == Config::SCOPE_LOCAL_PREFIX)
+                return getOwnReferenceByName(name);
+            auto ref = lookup(name);
+            if (ref->getType() == Value::ValueType::V_NIL)
+                return getOwnReferenceByName(name);
             return ref;
         }
         
-        inline Reference*
-        createInternalReference()
-        {
-            return 
-                this_table->getFromNumber(
-                    dynamic_cast<NumberValue*>(
-                        getGlobalRuntime()->newNumber(
-                            ++internal_ref_count).get()));
+        inline std::string
+        createTemplateName()
+        { 
+            return
+                Config::SCOPE_LOCAL_PREFIX +
+                std::to_string(++internal_ref_count);
         }
         
         inline Scope *

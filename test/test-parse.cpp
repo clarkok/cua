@@ -2,6 +2,10 @@
 #include "../../src/parse/driver.h"
 #include "../../src/exception.h"
 
+#include "../src/visitor.h"
+
+using namespace CUA;
+
 TEST(ParseTest, Basic)
 {
     static const char TEST_CODE[] = 

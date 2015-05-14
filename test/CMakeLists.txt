@@ -1,5 +1,6 @@
 SET (test_SRCS test-parse.cpp test-table.cpp test-scope.cpp
-               test-casting.cpp)
+               test-casting.cpp test-naive-compiler.cpp
+               test-enum-class.cpp test-naive-vm.cpp)
 
 ADD_EXECUTABLE (unit_test ${test_SRCS})
 TARGET_LINK_LIBRARIES (unit_test gtest gtest_main)
@@ -10,6 +11,7 @@ ADD_TEST (
 
 TARGET_LINK_LIBRARIES(
     unit_test 
-    ${CUA_BINARY_DIR}/src/parse/libparser.a
-    ${CUA_BINARY_DIR}/src/runtime/libruntime.a
+    parser
+    runtime
+    for_test
 )

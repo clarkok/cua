@@ -15,6 +15,7 @@ namespace CUA {
         NilValue *nil_value;
         Scope *global_scope;
         mutable Reference nil_ref;
+        Config::T_OID literal_count = 0;
     public:
         Runtime()
         : nil_value(new NilValue()),
@@ -72,6 +73,9 @@ namespace CUA {
         
         Scope*
         createScope();
+        
+        std::string
+        newLiteral(Value *);
     };
     
     inline Runtime *

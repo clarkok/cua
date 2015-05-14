@@ -69,7 +69,7 @@
 
 chunk : block { driver.root = new CUA::ASTChunk($1); }
 
-block : stat_list
+block : stat_list { $$ = $1; }
 
 stat_list : stat { $$ = new CUA::ASTStatList($1); }
     | stat_list stat
@@ -99,15 +99,16 @@ expr_list : expr { $$ = new CUA::ASTExprList($1); }
     
 expr : logic_expr
 
-logic_expr : compare_expr
+logic_expr : compare_expr { $$ = $1; }
     | logic_expr logic_op compare_expr
         { $$ = new CUA::ASTBinaryExpr($1, $2, $3); }
     
 logic_op : AND { $$ = CUA::ASTBinaryExpr::O_AND; }
     | OR { $$ = CUA::ASTBinaryExpr::O_OR; }
 
-compare_expr : additive_expr
+compare_expr : additive_expr { $$ = $1; }
     | compare_expr compare_op additive_expr
+        { $$ = new CUA::ASTBinaryExpr($1, $2, $3); }
     
 compare_op : EQ { $$ = CUA::ASTBinaryExpr::O_EQ; }
     | NE { $$ = CUA::ASTBinaryExpr::O_NE; }
@@ -116,7 +117,7 @@ compare_op : EQ { $$ = CUA::ASTBinaryExpr::O_EQ; }
     | GT { $$ = CUA::ASTBinaryExpr::O_GT; }
     | GE { $$ = CUA::ASTBinaryExpr::O_GE; }
 
-additive_expr : multiple_expr
+additive_expr : multiple_expr { $$ = $1; }
     | additive_expr ADD multiple_expr
         { $$ = new CUA::ASTBinaryExpr(
             $1,
@@ -128,7 +129,7 @@ additive_expr : multiple_expr
             CUA::ASTBinaryExpr::O_SUB,
             $3); }
     
-multiple_expr : unary_expr
+multiple_expr : unary_expr { $$ = $1; }
     | multiple_expr MUL unary_expr
         { $$ = new CUA::ASTBinaryExpr(
             $1,
@@ -145,7 +146,7 @@ multiple_expr : unary_expr
             CUA::ASTBinaryExpr::O_MOD,
             $3); }
     
-unary_expr : prefix_expr
+unary_expr : prefix_expr { $$ = $1; }
     | unary_op prefix_expr
         { $$ = new CUA::ASTUnaryExpr($1, $2); }
     
@@ -153,7 +154,7 @@ unary_op : NOT { $$ = CUA::ASTUnaryExpr::O_NOT; }
     | SUB { $$ = CUA::ASTUnaryExpr::O_SUB; }
     | ADD { $$ = CUA::ASTUnaryExpr::O_ADD; }
 
-prefix_expr : var
+prefix_expr : var { $$ = $1; }
     | LEFT_PAREN expr RIGHT_PAREN { $$ = $2; }
     | INT { $$ = new CUA::ASTNumber($1); }
     | STRING { $$ = new CUA::ASTString($1); }
