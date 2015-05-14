@@ -15,6 +15,7 @@ id [a-zA-Z_$][a-zA-Z0-9_$]*
 int [0-9]+
 blanks [ \t\v\h]+
 string \"(\\.|[^\\"])*\"
+label ::{id}::
 
 %{
     #define YY_USER_ACTION loc.columns (yyleng);
@@ -35,6 +36,7 @@ string \"(\\.|[^\\"])*\"
 "and" return yy::yyParser::make_AND(loc);
 "or" return yy::yyParser::make_OR(loc);
 "not" return yy::yyParser::make_NOT(loc);
+"goto" return yy::yyParser::make_GOTO(loc);
 "=" return yy::yyParser::make_EQ(loc);
 "," return yy::yyParser::make_COMMA(loc);
 "(" return yy::yyParser::make_LEFT_PAREN(loc);
@@ -62,6 +64,7 @@ string \"(\\.|[^\\"])*\"
 
 {string} return yy::yyParser::make_STRING(yytext, loc);
 
+{label} return yy::yyParser::make_LABEL(yytext, loc);
 
 "." return yy::yyParser::make_DOT(loc);
 

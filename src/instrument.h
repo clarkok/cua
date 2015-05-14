@@ -1,24 +1,23 @@
 #ifndef _CUA_INSTRUMENT_H_
 #define _CUA_INSTRUMENT_H_
 
+#include <list>
+
 #include "enum-class.h"
 
 namespace CUA {
     ENUM_CLASS(InstrumentType,
         I_UNKNOWN,
         I_ADD,
-        // I_ADDNN,
         I_SUB,
-        // I_SUBNN,
         I_MUL,
-        // I_MULNN,
         I_DIV,
-        // I_DIVNN,
         I_MOD,
-        // I_MODNN,
         I_INDEX,
         I_MOVE,
-        I_COPY
+        I_COPY,
+        I_LABEL,
+        I_GOTO
     );
     
     struct Instrument

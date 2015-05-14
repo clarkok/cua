@@ -168,6 +168,28 @@ namespace CUA {
         visitor_accept
     };
     
+    struct ASTLabel : public ASTNode
+    {
+        std::string name;
+        
+        ASTLabel(std::string name)
+        : name(name)
+        { }
+        
+        visitor_accept
+    };
+    
+    struct ASTGoto : public ASTNode
+    {
+        std::string dist;
+        
+        ASTGoto(std::string dist)
+        : dist(dist)
+        { }
+        
+        visitor_accept
+    };
+    
 #undef visitor_accept
 }
 

@@ -92,3 +92,22 @@ TEST(VMTest, VarInExpr)
         from_ref<std::int64_t>(
             *nvm.current_scope->getReferenceByName("b")));
 }
+
+TEST(VMTest, GotoLabel)
+{
+    const char TEST_CODE[] =
+        "a = 1\n"
+        "goto label_not_set\n"
+        "a = 2\n"
+        "::label_not_set::\n"
+    ;
+    Driver d(TEST_CODE);
+    d.parse();
+    NaiveCompiler nc;
+    auto inss = nc.compile(d.root);
+    NaiveVM nvm;
+    nvm.run(inss);
+    EXPECT_EQ(1,
+        from_ref<std::int64_t>(
+            *nvm.current_scope->getReferenceByName("a")));
+}

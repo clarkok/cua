@@ -1,6 +1,8 @@
 #ifndef _CUA_VM_H_
 #define _CUA_VM_H_
 
+#include <map>
+
 #include "ast.h"
 #include "visitor.h"
 #include "runtime/value.h"
@@ -20,6 +22,8 @@ namespace CUA {
             const Instrument &,
             InstrumentList &,
             InstrumentList::iterator &);
+        void countLabel(InstrumentList &);
+        std::map<std::string, InstrumentList::iterator> label_map;
     public:
         virtual void run(InstrumentList);
         Scope *current_scope;

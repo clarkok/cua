@@ -167,3 +167,21 @@ NaiveCompiler::visit(ASTString *n)
         getGlobalRuntime()->newString(n->value).get()
     );
 }
+
+void
+NaiveCompiler::visit(ASTLabel *n)
+{
+    ins_list.push_back(Instrument(
+        Instrument::Type::I_LABEL,
+        n->name
+    ));
+}
+
+void
+NaiveCompiler::visit(ASTGoto *n)
+{
+    ins_list.push_back(Instrument(
+        Instrument::Type::I_GOTO,
+        "::" + n->dist + "::"
+    ));
+}

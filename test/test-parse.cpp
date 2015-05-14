@@ -15,6 +15,7 @@ TEST(ParseTest, Basic)
         "a = a + b\n"
         "b = a + b * c\n"
         "c = a + b * (c + d)\n"
+        "::label::\n"
         "d = -a + +b\n"
         "e = a and b\n"
         "a, b = b, a\n"

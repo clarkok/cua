@@ -7,6 +7,8 @@
 using namespace CUA;
 
 static char TEST_CODE[] =
+    "::label::\n"
+    "goto label\n"
     "a = 255 + 2\n"
     "a = b * c\n"
     "a = d + a * b\n"

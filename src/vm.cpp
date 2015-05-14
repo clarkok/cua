@@ -72,6 +72,16 @@ NaiveVM::execInstrument(
                     *current_scope->getReferenceByName(ins.rs))
             );
             break;
+        case InstrumentType::I_LABEL:
+            break;
+        case InstrumentType::I_GOTO:
+            {
+                auto label_iter = label_map.find(ins.rd);
+                if (label_iter == label_map.end())
+                    throw Exception("No label found", ins.rd);
+                iter = label_iter->second;
+                break;
+            }
         default:
             throw Exception("Unknown instrument type");
     }
@@ -79,10 +89,19 @@ NaiveVM::execInstrument(
 }
 
 void
+NaiveVM::countLabel(InstrumentList &inss)
+{
+    label_map.clear();
+    for (auto i = inss.begin(); i != inss.end(); ++i)
+        if (i->type == InstrumentType::I_LABEL)
+            label_map.insert(std::make_pair(i->rd, i));
+}
+
+void
 NaiveVM::run(InstrumentList inss)
 {
+    countLabel(inss);
     auto i = inss.begin();
-    
     current_scope = getGlobalRuntime()->createScope();
     while (i != inss.end()) {
         execInstrument(*i, inss, i);

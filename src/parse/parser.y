@@ -49,6 +49,7 @@
     AND "and"
     OR "or"
     NOT "not"
+    GOTO "goto"
     LEFT_PAREN "("
     RIGHT_PAREN ")"
     LEFT_BRACKET "["
@@ -56,7 +57,7 @@
     DOT "."
     ;
     
-%token <std::string> ID STRING
+%token <std::string> ID STRING LABEL
 %token <int> INT
 
 %type <CUA::ASTNode *> chunk block stat_list stat var_list expr_list var
@@ -82,6 +83,8 @@ stat_list : stat { $$ = new CUA::ASTStatList($1); }
 stat : SEMICOLON { $$ = nullptr; }
     | DO block END { $$ = $2; }
     | var_list EQ expr_list { $$ = new CUA::ASTAssignment($1, $3); }
+    | LABEL { $$ = new CUA::ASTLabel($1); }
+    | GOTO ID { $$ = new CUA::ASTGoto($2); }
     
 var_list : var { $$ = new CUA::ASTVarList($1); }
     | var_list COMMA var
