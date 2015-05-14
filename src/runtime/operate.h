@@ -21,6 +21,25 @@ namespace CUA {
         Reference mod(Value *, Value *);
         Reference modnn(NumberValue *, NumberValue *);
         
+        Reference slt(Value *, Value *);
+        Reference sltnn(NumberValue *, NumberValue *);
+        Reference sltss(StringValue *, StringValue *);
+        
+        Reference sle(Value *, Value *);
+        Reference slenn(NumberValue *, NumberValue *);
+        Reference sless(StringValue *, StringValue *);
+        
+        Reference seq(Value *, Value *);
+        
+        Reference land(Value *, Value *);
+        Reference landbb(BooleanValue *, BooleanValue *);
+        
+        Reference lor(Value *, Value *);
+        Reference lorbb(BooleanValue *, BooleanValue *);
+        
+        Reference lnot(Value *);
+        Reference lnotb(BooleanValue *);
+        
         Reference index(Value *, Value *);
         Reference copy(Value *);
     }

@@ -86,8 +86,18 @@ NaiveCompiler::visit(ASTBinaryExpr *n)
         case ASTBinaryExpr::Operator::O_MOD:
             type = Instrument::Type::I_MOD;
             break;
+        case ASTBinaryExpr::Operator::O_AND:
+            type = Instrument::Type::I_LAND;
+            break;
+        case ASTBinaryExpr::Operator::O_OR:
+            type = Instrument::Type::I_LOR;
+            break;
+        case ASTBinaryExpr::Operator::O_EQ:
+            type = Instrument::Type::I_EQ;
+            break;
         default:
-            throw Exception("Operator unsupport");
+            throw Exception("Binary Operator unsupport",
+                std::to_string(static_cast<int>(n->op)));
     }
     
     result_name = getTempName();
@@ -117,8 +127,11 @@ NaiveCompiler::visit(ASTUnaryExpr *n)
         case ASTUnaryExpr::Operator::O_ADD:
             type = Instrument::Type::I_ADD;
             break;
+        case ASTUnaryExpr::Operator::O_NOT:
+            type = Instrument::Type::I_LNOT;
+            break;
         default:
-            throw Exception("Operator unsupport");
+            throw Exception("Unary Operator unsupport");
     }
     
     result_name = getTempName();

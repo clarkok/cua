@@ -95,6 +95,7 @@ int yywrap() {
 void
 Driver::scanner_begin(const char *content)
 {
+    loc = yy::location();
     if (content)
         this->content = content;
     else

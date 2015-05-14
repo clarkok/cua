@@ -13,6 +13,10 @@ namespace CUA {
         I_MUL,      // rd = rs * rt
         I_DIV,      // rd = rs / rt
         I_MOD,      // rd = rs % rt
+        I_LAND,     // rd = rs && rt
+        I_LOR,      // rd = rs || rt
+        I_LNOT,     // rd = !rs
+        I_EQ,       // rd = (rs == rt)
         I_INDEX,    // rd = rs[rt]
         I_MOVE,     // rd = rs
         I_COPY,     // rd = new rs

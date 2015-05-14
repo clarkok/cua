@@ -65,9 +65,10 @@
 %token <bool> TRUE FALSE
 
 %type <CUA::ASTNode *> chunk block stmt_list stmt var_list expr_list var
-%type <CUA::ASTNode *> expr logic_expr compare_expr additive_expr 
+%type <CUA::ASTNode *> expr compare_expr additive_expr logic_and_expr
 %type <CUA::ASTNode *> multiple_expr unary_expr prefix_expr if_stmt
-%type <CUA::ASTBinaryExpr::Operator> logic_op compare_op
+%type <CUA::ASTNode *> logic_or_expr
+%type <CUA::ASTBinaryExpr::Operator> compare_op
 %type <CUA::ASTUnaryExpr::Operator> unary_op
     
 %%
@@ -92,10 +93,10 @@ stmt : SEMICOLON { $$ = nullptr; }
     | if_stmt { $$ = $1; }
     
 if_stmt : 
-    IF LEFT_PAREN expr RIGHT_PAREN THEN stmt_list END
-        { $$ = new CUA::ASTIf($3, $6); }
-    | IF LEFT_PAREN expr RIGHT_PAREN THEN stmt_list ELSE stmt_list END
-        { $$ = new CUA::ASTIf($3, $6, $8); }
+    IF expr THEN stmt_list END
+        { $$ = new CUA::ASTIf($2, $4); }
+    | IF expr THEN stmt_list ELSE stmt_list END
+        { $$ = new CUA::ASTIf($2, $4, $6); }
     
 var_list : var { $$ = new CUA::ASTVarList($1); }
     | var_list COMMA var
@@ -111,14 +112,27 @@ expr_list : expr { $$ = new CUA::ASTExprList($1); }
             $$ = $1;
         }
     
-expr : logic_expr
+expr : logic_or_expr
 
-logic_expr : compare_expr { $$ = $1; }
-    | logic_expr logic_op compare_expr
-        { $$ = new CUA::ASTBinaryExpr($1, $2, $3); }
-    
-logic_op : AND { $$ = CUA::ASTBinaryExpr::O_AND; }
-    | OR { $$ = CUA::ASTBinaryExpr::O_OR; }
+logic_or_expr : logic_and_expr { $$ = $1; }
+    | logic_or_expr OR logic_and_expr
+        {
+            $$ = new CUA::ASTBinaryExpr(
+                $1,
+                CUA::ASTBinaryExpr::O_OR,
+                $3
+            );
+        }
+        
+logic_and_expr : compare_expr { $$ = $1; }
+    | logic_and_expr AND compare_expr
+        {
+            $$ = new CUA::ASTBinaryExpr(
+                $1,
+                CUA::ASTBinaryExpr::O_AND,
+                $3
+            );
+        }
 
 compare_expr : additive_expr { $$ = $1; }
     | compare_expr compare_op additive_expr

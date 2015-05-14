@@ -55,6 +55,37 @@ NaiveVM::execInstrument(
                 )
             );
             break;
+        case InstrumentType::I_LAND:
+            current_scope->getReferenceByName(ins.rd)->reset(
+                Operate::land(
+                    *current_scope->getReferenceByName(ins.rs),
+                    *current_scope->getReferenceByName(ins.rt)
+                )
+            );
+            break;
+        case InstrumentType::I_LOR:
+            current_scope->getReferenceByName(ins.rd)->reset(
+                Operate::lor(
+                    *current_scope->getReferenceByName(ins.rs),
+                    *current_scope->getReferenceByName(ins.rt)
+                )
+            );
+            break;
+        case InstrumentType::I_LNOT:
+            current_scope->getReferenceByName(ins.rd)->reset(
+                Operate::lnot(
+                    *current_scope->getReferenceByName(ins.rs)
+                )
+            );
+            break;
+        case InstrumentType::I_EQ:
+            current_scope->getReferenceByName(ins.rd)->reset(
+                Operate::seq(
+                    *current_scope->getReferenceByName(ins.rs),
+                    *current_scope->getReferenceByName(ins.rt)
+                )
+            );
+            break;
         case InstrumentType::I_INDEX:
             *current_scope->getReferenceByName(ins.rd) =
                 Operate::index(
@@ -97,7 +128,9 @@ NaiveVM::execInstrument(
                 break;
             }
         default:
-            throw Exception("Unknown instrument type");
+            throw Exception("Unknown instrument type", 
+                ERE(InstrumentType)
+                    ->toString(iter->type));
     }
     ++iter;
 }
